@@ -191,10 +191,6 @@ Identificação do Sucesso (Request #2): A requisição de número 2 destacou-se
 <img width="1365" height="767" alt="10-Bforcewebintruder-part6" src="https://github.com/user-attachments/assets/d5a79fab-5da8-45f2-a477-78faa7c78df5" />
 
 >
-#  **Ajuste de Security Level** 
-
-
->
 ## Conclusão e Agradecimentos
 Este projeto foi muito além de uma simulação de Brute-Force. Ele representou um estudo abrangente sobre diversos vetores de ataque e defesa, executado em um ambiente ético, controlado e autorizado.
 
