@@ -61,7 +61,7 @@ A análise das permissões revelou uma configuração interessante: enquanto o p
 
 Utilizando o proxy do Burp Suite Community, foi realizada a interceptação da requisição HTTP (método POST) gerada durante uma tentativa de login. Esta etapa é fundamental para identificar os parâmetros de entrada (username e password) que servirão como vetores para o ataque de força bruta.
  
-<img width="801" height="446" alt="image" src="https://github.com/user-attachments/assets/eabd18c4-a4ed-4338-a846-d84726eb3a55" />
+<img width="726" height="416" alt="image" src="https://github.com/user-attachments/assets/2ccf7d47-5b1c-420e-9889-e04f51b62bf2" />
 
 __
 
