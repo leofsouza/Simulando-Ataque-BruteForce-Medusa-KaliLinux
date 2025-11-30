@@ -11,10 +11,6 @@ Utilizando sistemas operacionais ofensivos (Kali Linux ou Parrot OS), foram simu
 
 Esta atividade alinha-se à tática de Descoberta (Discovery) do framework MITRE ATT&CK, sendo especificamente catalogada como a técnica T1046 - Network Service Discovery.
 
-https://github.com/user-attachments/assets/7390220a-964f-44de-8985-16426507abf9
-
-
-
 
 ## Especificações de Rede do Alvo
 <img width="1365" height="767" alt="1" src="https://github.com/user-attachments/assets/76a2e532-201d-499a-b720-706e8fcd76eb" />
