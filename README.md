@@ -36,34 +36,32 @@ Após a execução da técnica de Credential Stuffing, foi confirmado o reaprove
 
 ## Durante a fase de enumeração, a porta 80 (HTTP) foi identificada com o status Open (Aberta), indicando a presença de um serviço web ativo.
 Inspeção de Código-Fonte via CLI (Curl).
-Utilização do utilitário curl para requisições HTTP manuais. O objetivo foi inspecionar o código HTML bruto em busca de arquivos sensíveis, comentários de desenvolvedores ou tags de formulários (<form>) que pudessem servir como vetores de entrada.
-<img width="1365" height="794" alt="8-curl-part1" src="https://github.com/user-attachments/assets/04f2651e-0873-40f9-9784-458d8659151d" />
+Utilização do utilitário curl para requisições HTTP manuais. O objetivo foi inspecionar o código HTML bruto em busca de arquivos sensíveis, comentários de desenvolvedores ou tags de formulários que pudessem servir como vetores de entrada.
+<img width="999" height="623" alt="image" src="https://github.com/user-attachments/assets/d7ff663d-faca-4bf8-9b2b-ec6b3aea6c15" />
 
 
 Análise de Resposta HTTP: A requisição via método GET foi processada com sucesso pelo servidor, retornando o código de status 200 (OK). A análise do corpo da resposta confirmou o recebimento do código-fonte HTML da aplicação, validando a comunicação com o host alvo.
 
 ## Análise do Retorno do Comando Curl
-<img width="1365" height="767" alt="8-curl-part2" src="https://github.com/user-attachments/assets/46a8444a-cf3c-41e4-8c18-23b94562c810" />
+<img width="531" height="429" alt="image" src="https://github.com/user-attachments/assets/9adbcbf1-9e27-489c-861f-4bfc2bbda06b" />
 
 Identificação de Rotas e Links Internos: A análise do conteúdo revelou a presença de diversos hiperlinks e caminhos de diretórios internos. Essas referências expõem a estrutura de navegação da aplicação web hospedada no alvo (192.168.192.129).
 
 ## Identificação de Serviço FTP (Porta 21): Durante a fase de enumeração, a porta 21 foi detectada com status Open (Aberta), indicando a presença de um servidor FTP (File Transfer Protocol) ativo e acessível.
 Validação de Acesso com Credenciais Comprometidas: Procedeu-se à tentativa de autenticação no sistema utilizando as credenciais previamente extraídas através da ferramenta Ncrack. O objetivo foi confirmar a validade dos dados de acesso num cenário real.
-<img width="1365" height="767" alt="9-ftp-part1" src="https://github.com/user-attachments/assets/94925dc3-b3a1-4a04-97f2-a4b62df615c3" />
-
+<img width="588" height="458" alt="image" src="https://github.com/user-attachments/assets/73743ba8-8fac-4059-bb2c-f990ff78ad4b" />
 
  Com a sessão estabelecida, avancei para a enumeração do sistema de arquivos. Ao acessar /home, verifiquei a existência da pasta do usuário msfadmin.
 
 A análise das permissões revelou uma configuração interessante: enquanto o proprietário possui controle total, usuários externos possuem apenas permissão de execução. Isso significa que, embora seja possível acessar o diretório, a leitura e a escrita são negadas pelo sistema operacional, agindo como uma barreira de segurança.
 
-
-<img width="1365" height="767" alt="9-ftp-part2" src="https://github.com/user-attachments/assets/971f5fc4-16bf-4f3e-a7ab-b62855234abb" />
+<img width="600" height="450" alt="image" src="https://github.com/user-attachments/assets/419779cd-5e3a-45bd-8147-d894c5f3b2bf" />
 
 ## Auditoria de Autenticação Web com Burp Suite
 
 Utilizando o proxy do Burp Suite Community, foi realizada a interceptação da requisição HTTP (método POST) gerada durante uma tentativa de login. Esta etapa é fundamental para identificar os parâmetros de entrada (username e password) que servirão como vetores para o ataque de força bruta.
  
-<img width="1365" height="767" alt="10-Bforceweb-part1" src="https://github.com/user-attachments/assets/cfca2bd0-5e79-487a-b439-35b7c4560f42" />
+<img width="801" height="446" alt="image" src="https://github.com/user-attachments/assets/eabd18c4-a4ed-4338-a846-d84726eb3a55" />
 
 __
 
@@ -78,7 +76,7 @@ Painel de Dados: Apresenta a lista de payloads (dicionário de usuários e senha
 Esse teste visa explorar a falta de limitação de tentativas de login no DVWA, simulando como um atacante testaria múltiplas credenciais em segundos.
 --
 
-<img width="1365" height="767" alt="10-Bforceweb-part2" src="https://github.com/user-attachments/assets/04bd3367-8363-4686-9831-5c5cc62c1dac" />
+<img width="829" height="434" alt="image" src="https://github.com/user-attachments/assets/a9d095e0-087a-4574-b806-9f0a9fa8c259" />
 
 >
 >
@@ -115,15 +113,11 @@ A utilização do módulo Repeater é fundamental para a análise granular da ap
 
 Este processo manual permite mapear o comportamento do servidor, identificando discrepâncias nas respostas (como variação no Content-Length ou mensagens de erro verbosas) que revelam falhas na lógica de autenticação, validando o cenário para ataques automatizados subsequentes.
 
-<img width="1365" height="767" alt="10-Bforceweb-part3" src="https://github.com/user-attachments/assets/a9edbbc6-97b5-4c92-8c3c-bb73a9ffa474" />
-
-
+<img width="830" height="412" alt="image" src="https://github.com/user-attachments/assets/e1bb2206-df99-4139-a53a-7f8d219cef39" />
 
 ---
 
-
-<img width="1365" height="767" alt="10-Bforceweb-part4" src="https://github.com/user-attachments/assets/be56d37b-36f6-40d0-b4d6-d5c3a9c13cc5" />
-
+<img width="478" height="436" alt="image" src="https://github.com/user-attachments/assets/ee31adb1-ff72-4b9a-b4da-962195744ee9" />
 
 Nesta etapa, foi utilizado o módulo Repeater do Burp Suite para a execução de testes manuais de segurança. O objetivo foi auditar o comportamento da aplicação diante de diferentes inputs de credenciais.
 
@@ -165,13 +159,13 @@ Conclusão da Fase de Enumeração: Esta resposta é um dado crítico. Ela estab
 A análise da requisição revelou o retorno do status code 302 Found. Este comportamento de redirecionamento foi mapeado como um indicador chave da resposta da aplicação.
 
 Com o padrão de resposta identificado, a requisição foi encaminhada para o módulo Intruder. O objetivo agora é automatizar o processo, executando um ataque de força bruta (Brute-Force) com base nos vetores de teste definidos.
-<img width="1365" height="767" alt="10-Bforceweb-part5" src="https://github.com/user-attachments/assets/3580a134-525e-4ba4-b1ea-8f54b07f088f" />
+<img width="485" height="429" alt="image" src="https://github.com/user-attachments/assets/2b1172dc-2b17-454d-bf05-3b9897ad108b" />
 
 >
 
 Nota de Execução: A configuração visual dos payloads consistiu na inserção de marcadores nos campos de login e senha, utilizando wordlists personalizadas para cada vetor de entrada.
 
-<img width="1365" height="767" alt="10-Bforcewebintruder-part5" src="https://github.com/user-attachments/assets/0d37d9f8-057d-43fe-b6e2-f7be1da80d7a" />
+<img width="751" height="420" alt="image" src="https://github.com/user-attachments/assets/93ab3c4a-8ded-4bd5-89fd-6e01ba10e31d" />
 
 Durante a execução do ataque via Intruder contra o alvo (http://192.168.192.129), monitorou-se as respostas do servidor em busca de anomalias ou mensagens de sucesso.
 
@@ -180,7 +174,7 @@ Identificação do Sucesso (Request #2): A requisição de número 2 destacou-se
 >
 >
  ## Obtenção de Acesso Administrativo
-<img width="1365" height="767" alt="10-Bforcewebintruder-part6" src="https://github.com/user-attachments/assets/d5a79fab-5da8-45f2-a477-78faa7c78df5" />
+<img width="593" height="430" alt="image" src="https://github.com/user-attachments/assets/5ae1bf44-6df3-45a7-8139-d1677ccbb6b5" />
 
 >
 ## Conclusão e Agradecimentos
