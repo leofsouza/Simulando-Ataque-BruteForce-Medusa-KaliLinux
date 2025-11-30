@@ -1,88 +1,89 @@
-## Desafio de projeto - "Santander - Cibersegurança 2025"
-# Simulando-Ataques-de-Brute-Force
+## Desafio Santander - Cibersegurança 2025
+# Projeto Simulando-Ataques-de-Brute-Force
 Descrição do Desafio:
-Implementar, documentar e compartilhar um projeto prático utilizando Kali Linux or Parrot OS e a ferramenta Medusa, ncrack, Hydra, BurpSuite em conjunto com ambientes vulneráveis (por exemplo, Metasploitable 2 e DVWA), para simular cenários de ataque de força bruta e exercitar medidas de prevenção.
+Este projeto consiste na implementação e documentação de um laboratório prático focado em ataques de Força Bruta (Brute Force).
 
+Utilizando sistemas operacionais ofensivos (Kali Linux ou Parrot OS), foram simulados cenários reais de ataque contra ambientes vulneráveis, como Metasploitable 2 e DVWA. O objetivo principal é explorar o funcionamento de ferramentas como Medusa, ncrack, Hydra e BurpSuite para, posteriormente, desenvolver e exercitar medidas eficazes de prevenção e mitigação dessas vulnerabilidades.
 
-## Enumeração de portas, serviços & versão e sistema operacional do alvo - NMAP (Network Mapper)
+## Reconhecimento de Infraestrutura e Fingerprinting com Nmap
 
-* Realizei um scanner de serviço de rede com o nmap para poder identificar portas abertas e possíveis softwares vuneráveis no alvo remoto. Essa tecnica é uma tatica de discovery ou descoberta em português. O ID dessa técnica é 1046 segundo o site "https://attack.mitre.org/techniques/T1046/".
+* Utilizei o Nmap para realizar um scan de serviços de rede, buscando detectar portas abertas e versões de software vulneráveis no host alvo.
+
+Esta atividade alinha-se à tática de Descoberta (Discovery) do framework MITRE ATT&CK, sendo especificamente catalogada como a técnica T1046 - Network Service Discovery.
 
 https://github.com/user-attachments/assets/7390220a-964f-44de-8985-16426507abf9
 
 
 
 
-## Configurações de rede do alvo
+## Especificações de Rede do Alvo
 <img width="1365" height="767" alt="1" src="https://github.com/user-attachments/assets/76a2e532-201d-499a-b720-706e8fcd76eb" />
 
-## Teste de conectividade usando o utilitário de rede ping.
+## Validação de Conectividade (Protocolo ICMP)
 <img width="1365" height="767" alt="2" src="https://github.com/user-attachments/assets/9d56fb32-c858-4af4-815d-3073aa2e188d" />
 
-## Criando a lista de senhas e usúarios personalizada 
+## Criação de Wordlists para Autenticação
 - A mesma lista será utilizada para realizar o ataque de força-bruta na aplicação Web do DVWA
 
 
 <img width="1365" height="767" alt="4" src="https://github.com/user-attachments/assets/086862ad-521a-47c5-97b5-6beaf8391ff1" />
 
-## Realizei um ataque de brute-force no serviço FTP (FILE TRANSFER PROTOCOL) usando o ncrack. 
-Nota: A ferramenta encontrou uma combinação de username e password - *Credenciais.*
+## Foi realizado um ataque de força bruta (Brute-Force) contra o serviço FTP (Porta 21) utilizando a ferramenta Ncrack para testar a resistência da autenticação.
+Resultado da Execução: A ferramenta obteve êxito ao identificar credenciais válidas (username/password).
 
-Mindset Hacker: Podemos executar uma ataque de Credentials Stuffing para tentar entrar em outros serviços com o mesmo username (usúario) ou senha
+Análise de Impacto (Credential Reuse): A obtenção destas credenciais expõe o sistema ao risco de Reutilização de Senhas (Credential Stuffing). Um atacante poderia utilizar essas mesmas informações para tentar autenticação em outros serviços críticos (como SSH, Telnet ou Painéis Web) para ampliar seu acesso à infraestrutura.
 
 
 <img width="1365" height="767" alt="5" src="https://github.com/user-attachments/assets/61dd7651-988e-4108-88a1-3384e3277760" />
 
 
-## Depois que o ataque *Credentials Stuffing* foi executado, encontramos o username e passoword para realizar o login usando o ssh (secure shell) na porta padrão 22.
+## Validação de Credential Stuffing no SSH
+Após a execução da técnica de Credential Stuffing, foi confirmado o reaproveitamento de credenciais. O mesmo par de usuário e senha permitiu a autenticação bem-sucedida no serviço SSH (Secure Shell) através da porta padrão 22.
 <img width="1365" height="727" alt="7" src="https://github.com/user-attachments/assets/6e22cfa3-b8ce-40fe-ab94-7d76f3a43296" />
 
 
-## Na enumeração, a porta 80 (http) foi considerada como open - aberta. 
-Podemos usar a ferramenta cli **curl** para verificar se existe arquivos interesantes ou formulários...
+## Durante a fase de enumeração, a porta 80 (HTTP) foi identificada com o status Open (Aberta), indicando a presença de um serviço web ativo.
+Inspeção de Código-Fonte via CLI (Curl).
+Utilização do utilitário curl para requisições HTTP manuais. O objetivo foi inspecionar o código HTML bruto em busca de arquivos sensíveis, comentários de desenvolvedores ou tags de formulários (<form>) que pudessem servir como vetores de entrada.
 <img width="1365" height="794" alt="8-curl-part1" src="https://github.com/user-attachments/assets/04f2651e-0873-40f9-9784-458d8659151d" />
 
 
-- A resposta à nossa solicitação foi 200 (OK), e obtivemos informações adicionais no corpo da resposta HTTP.
-Podemos observar que o método HTTP utilizado foi GET, o conteúdo retornado corresponde ao código-fonte HTML da página, e o alvo acessado foi o host especificado.
+Análise de Resposta HTTP: A requisição via método GET foi processada com sucesso pelo servidor, retornando o código de status 200 (OK). A análise do corpo da resposta confirmou o recebimento do código-fonte HTML da aplicação, validando a comunicação com o host alvo.
 
-
-## Part2 - OUTPUT do request - "CURL"
+## Análise do Retorno do Comando Curl
 <img width="1365" height="767" alt="8-curl-part2" src="https://github.com/user-attachments/assets/46a8444a-cf3c-41e4-8c18-23b94562c810" />
 
-Podemos notar que o *Host*  tem hiperlinks ou caminhos para outras páginas dentro do site **http://192.168.192.129.**
+Identificação de Rotas e Links Internos: A análise do conteúdo revelou a presença de diversos hiperlinks e caminhos de diretórios internos. Essas referências expõem a estrutura de navegação da aplicação web hospedada no alvo (192.168.192.129).
 
-## Na enumeração, também encontramos a porta 21 marcada como open.
-Vamos realizar uma tentiva de login usando as credenciais fornecidas previamente pela a ferramenta ncrack.
-
+## Identificação de Serviço FTP (Porta 21): Durante a fase de enumeração, a porta 21 foi detectada com status Open (Aberta), indicando a presença de um servidor FTP (File Transfer Protocol) ativo e acessível.
+Validação de Acesso com Credenciais Comprometidas: Procedeu-se à tentativa de autenticação no sistema utilizando as credenciais previamente extraídas através da ferramenta Ncrack. O objetivo foi confirmar a validade dos dados de acesso num cenário real.
 <img width="1365" height="767" alt="9-ftp-part1" src="https://github.com/user-attachments/assets/94925dc3-b3a1-4a04-97f2-a4b62df615c3" />
 
 
- - Observe que tivemos êxito na autenticação. Temos um nivel de autorização considerado alto, pois, consiguimos acessar a pasta "/home" de forma muito fácil.
-Será que tem arquivos na pasta "/home/msfadmin"?
+ Com a sessão estabelecida, avancei para a enumeração do sistema de arquivos. Ao acessar /home, verifiquei a existência da pasta do usuário msfadmin.
 
-- Não encontramos arquivos, porém existe um diretório com permissões inseguras.
-- O proprietário possui permissões de leitura (r), escrita (w) e execução (x). Já os usuários convidados ou outros têm apenas permissão de execução (x).
-- Isso significa que podemos entrar no diretório, mas não podemos criar (escrever) nem ler arquivos.
+A análise das permissões revelou uma configuração interessante: enquanto o proprietário possui controle total, usuários externos possuem apenas permissão de execução. Isso significa que, embora seja possível acessar o diretório, a leitura e a escrita são negadas pelo sistema operacional, agindo como uma barreira de segurança.
 
 
 <img width="1365" height="767" alt="9-ftp-part2" src="https://github.com/user-attachments/assets/971f5fc4-16bf-4f3e-a7ab-b62855234abb" />
 
-## Ataque de Brute-Force em formúlarios Web do alvo usando o BurpSuite Community.
+## Auditoria de Autenticação Web com Burp Suite
 
- Interceptei uma request (solicitação) de tentativa de login no site do alvo.
+Utilizando o proxy do Burp Suite Community, foi realizada a interceptação da requisição HTTP (método POST) gerada durante uma tentativa de login. Esta etapa é fundamental para identificar os parâmetros de entrada (username e password) que servirão como vetores para o ataque de força bruta.
  
 <img width="1365" height="767" alt="10-Bforceweb-part1" src="https://github.com/user-attachments/assets/cfca2bd0-5e79-487a-b439-35b7c4560f42" />
 
 __
 
-No print abaixo, estou simulando um ataque de força bruta contra um ambiente vulnerável utilizando o **Burp Suite Community Edition**. A aplicação-alvo é o **DVWA (Damn Vulnerable Web Application)**, hospedada em `http://192.168.192.129/dvwa/login.php`.
+Configuração do Ataque no Burp Suite
 
-No lado esquerdo da tela, configurei uma requisição **HTTP POST** no Burp Suite, enviando credenciais de login (`username=admin&password=admin`) para testar a resposta do servidor. A requisição inclui cabeçalhos padrão como `Content-Type: application/x-www-form-urlencoded`, `User-Agent`, `Referer` e outros que simulam o comportamento de um navegador legítimo.
+A imagem demonstra a preparação para um ataque de Brute-Force.
 
-À direita, estou documentando o processo em um terminal com editor de texto aberto. Nele, a notei as combinações de username e password - a lista de **payloads de usuário e senha** que serão utilizados no ataque de força bruta. Essa lista inclui combinações comuns como `admin`, `1234`, `admin1`, `admin2`, `teste`, entre outras.
+Painel de Requisição: Exibe o pacote HTTP POST interceptado, pronto para ser enviado ao módulo Intruder. Note os parâmetros username e password isolados no corpo da mensagem.
 
-O objetivo deste teste é verificar se o sistema possui mecanismos de proteção contra tentativas automatizadas de login, como bloqueio por IP, CAPTCHA ou limitação de requisições. Até o momento, o ambiente se mostrou vulnerável, permitindo múltiplas tentativas sem restrições aparentes.
+Painel de Dados: Apresenta a lista de payloads (dicionário de usuários e senhas) que serão injetados sequencialmente na aplicação.
+
+Esse teste visa explorar a falta de limitação de tentativas de login no DVWA, simulando como um atacante testaria múltiplas credenciais em segundos.
 --
 
 <img width="1365" height="767" alt="10-Bforceweb-part2" src="https://github.com/user-attachments/assets/04bd3367-8363-4686-9831-5c5cc62c1dac" />
@@ -90,11 +91,11 @@ O objetivo deste teste é verificar se o sistema possui mecanismos de proteção
 >
 >
 
-No print abaixo, estou utilizando o **Burp Suite Community Edition** para realizar testes de segurança em uma aplicação vulnerável, o **DVWA (Damn Vulnerable Web Application)**, acessível em `http://192.168.192.129/dvwa/login.php`.
+Nesta etapa, foi utilizado o módulo Repeater do Burp Suite para isolar e manipular requisições individuais contra o endpoint de autenticação do DVWA (/dvwa/login.php).
 
-O foco principal está no módulo **Repeater**, onde estou manipulando e reenviando uma requisição **HTTP POST** para o endpoint de login da aplicação. Essa funcionalidade do Burp Suite permite testar manualmente diferentes combinações de parâmetros e observar como o servidor responde a cada tentativa.
+Diferente dos ataques automatizados, o Repeater permite um controle granular sobre o pacote HTTP POST. O objetivo foi alterar parâmetros específicos e reenviar a solicitação repetidamente para analisar como o servidor processa entradas inválidas ou maliciosas em tempo real.
 
-A requisição enviada inclui os seguintes cabeçalhos:
+Estrutura da Requisição Analisada:
 
 ```
 POST /dvwa/login.php HTTP/1.1
@@ -112,13 +113,15 @@ Accept-Language: en-US,en;q=0.5
 Connection: close
 ```
 
-No corpo da requisição, estou testando as credenciais:
+Request Body contém os parâmetros de autenticação submetidos para validação:
 
 ```
 username=admin&password=admin
 ```
 
-O **Repeater** é essencial para este tipo de análise, pois me permite modificar os parâmetros de forma rápida e observar a resposta HTTP da aplicação em tempo real. Com isso, consigo identificar padrões de resposta, mensagens de erro, e potenciais falhas de autenticação que podem ser exploradas em ataques mais avançados, como `força bruta`.
+A utilização do módulo Repeater é fundamental para a análise granular da aplicação. Ele possibilita a manipulação iterativa dos parâmetros e a inspeção imediata das respostas HTTP.
+
+Este processo manual permite mapear o comportamento do servidor, identificando discrepâncias nas respostas (como variação no Content-Length ou mensagens de erro verbosas) que revelam falhas na lógica de autenticação, validando o cenário para ataques automatizados subsequentes.
 
 <img width="1365" height="767" alt="10-Bforceweb-part3" src="https://github.com/user-attachments/assets/a9edbbc6-97b5-4c92-8c3c-bb73a9ffa474" />
 
@@ -130,15 +133,15 @@ O **Repeater** é essencial para este tipo de análise, pois me permite modifica
 <img width="1365" height="767" alt="10-Bforceweb-part4" src="https://github.com/user-attachments/assets/be56d37b-36f6-40d0-b4d6-d5c3a9c13cc5" />
 
 
-Neste momento do projeto, estou utilizando  o módulo **Repeater**, para realizar testes manuais de autenticação na aplicação vulnerável.
+Nesta etapa, foi utilizado o módulo Repeater do Burp Suite para a execução de testes manuais de segurança. O objetivo foi auditar o comportamento da aplicação diante de diferentes inputs de credenciais.
 
-No lado esquerdo do print, o Burp Suite exibe uma requisição **HTTP POST** que estou manipulando diretamente no Repeater. Essa requisição é enviada para o endpoint `/dvwa/login.php`, e contém os seguintes parâmetros no corpo:
+A imagem demonstra a manipulação de uma requisição HTTP POST direcionada ao endpoint /dvwa/login.php. No corpo desta requisição, foram isolados os seguintes parâmetros para teste:
 
 ```
 username=msfadmin&password=naftali&Login=Login
 ```
 
-Os cabeçalhos da requisição foram mantidos conforme o navegador original, simulando uma tentativa legítima de login:
+A integridade dos cabeçalhos HTTP foi preservada para emular com precisão o comportamento de um navegador padrão. Esta prática garante que a requisição seja interpretada pelo servidor como uma interação legítima de usuário.
 
 ```
 POST /dvwa/login.php HTTP/1.1
@@ -156,49 +159,53 @@ Accept-Language: en-US,en;q=0.5
 Connection: close
 ```
 
-O **Repeater** é uma ferramenta essencial para esse tipo de análise, pois me permite modificar os parâmetros da requisição — como o nome de usuário, senha ou até mesmo o campo `Login` — e reenviar rapidamente para observar como o servidor responde. Isso facilita a identificação de padrões de resposta, mensagens de erro específicas e possíveis brechas no mecanismo de autenticação.
+## Análise de Comportamento e Tratamento de Erros
 
-No lado direito do print, o navegador exibe a interface da DVWA com o formulário de login. Após o envio da requisição manipulada, a aplicação retorna a mensagem **"Login failed"**, indicando que as credenciais testadas não foram aceitas. Essa resposta é útil para validar o comportamento da aplicação diante de diferentes combinações de usuário e senha.
+O uso do Repeater permitiu um ciclo rápido de modificação e reenvio de parâmetros (username, password, Login), essencial para entender a lógica de validação do servidor.
 
-Esse processo é parte da fase de **reconhecimento e enumeração de falhas**, onde busco entender como a aplicação trata entradas inválidas e se há espaço para ataques como **força bruta** ou **bypass de autenticação**.
+Resultado do Teste Manual: Ao submeter credenciais inválidas, a aplicação retornou a mensagem "Login failed".
+
+Conclusão da Fase de Enumeração: Esta resposta é um dado crítico. Ela estabelece uma linha de base (baseline) do comportamento da aplicação diante de falhas. A identificação desta mensagem de erro específica confirma que o sistema valida as entradas, mas também fornece a "assinatura" necessária para configurar filtros em ataques automatizados subsequentes (como Brute-Force), permitindo distinguir uma tentativa falha de um sucesso.
 
 >
 >
 
-- A resposta da solicitação. O Status code foi `302 Found` isso indica que ocorreu falha no login...
-- Vamos automatizar usar `Intruder` para realizar o ataque de brute-force.
+A análise da requisição revelou o retorno do status code 302 Found. Este comportamento de redirecionamento foi mapeado como um indicador chave da resposta da aplicação.
+
+Com o padrão de resposta identificado, a requisição foi encaminhada para o módulo Intruder. O objetivo agora é automatizar o processo, executando um ataque de força bruta (Brute-Force) com base nos vetores de teste definidos.
 <img width="1365" height="767" alt="10-Bforceweb-part5" src="https://github.com/user-attachments/assets/3580a134-525e-4ba4-b1ea-8f54b07f088f" />
 
 >
 
-OBS: Esqueci de tira prints da configuração dos payloads e suas posições.
+Nota de Execução: A configuração visual dos payloads consistiu na inserção de marcadores nos campos de login e senha, utilizando wordlists personalizadas para cada vetor de entrada.
 
 <img width="1365" height="767" alt="10-Bforcewebintruder-part5" src="https://github.com/user-attachments/assets/0d37d9f8-057d-43fe-b6e2-f7be1da80d7a" />
 
-- Na imagem, podemos ver no lado direito que o `Intruder Attack` que realizei foi direcionado para a URL ```http://192.168.192.129```.
-- Já no lado esquerdo podemos ver que a aplicação retornou ```You have logged in as 'admin'```. Com essa informação podemos ter a certeza que o usúario é admin.
-- E podemos tentar um login com o ```Payload 2``` que contém o valor  **password** na segunda solicitação ou request 2.
+Durante a execução do ataque via Intruder contra o alvo (http://192.168.192.129), monitorou-se as respostas do servidor em busca de anomalias ou mensagens de sucesso.
+
+Identificação do Sucesso (Request #2): A requisição de número 2 destacou-se por retornar a string de confirmação: You have logged in as 'admin'.
 
 >
 >
- ## USER and PASS FOUND !!!
+ ## Obtenção de Acesso Administrativo
 <img width="1365" height="767" alt="10-Bforcewebintruder-part6" src="https://github.com/user-attachments/assets/d5a79fab-5da8-45f2-a477-78faa7c78df5" />
 
 >
-#  **Security Level** 
+#  **Ajuste de Security Level** 
 
 
 >
 
-A aplicação Web estava com o nível de segurança (**Security Level**) medium ou médio.
+Para este teste, a aplicação web foi configurada com o Security Level definido como Medium.
 
 <img width="1365" height="767" alt="10-Bforcelevel" src="https://github.com/user-attachments/assets/5e8fee9c-74a2-4dca-b7eb-407da343beb7" />
 
 
 >
-## Considerações Finais:
-- Esse foi um projeto simulando não apenas, um ataque de brute-force, mas diversos ataques em ambiente ético e autorizado por mim, @NaftalidaCosta.
-- É importante o conhecimento, o Santander e a DIO promovem bootcamps em diversas áreas. Esse projeto foi realizado durante a fase de Desafio de Projeto do Bootcamp **Santader - Cibersegurança 2025**.
-- Como estudante de Tecnologia da Informação sou grato por participar dos Bootcamps do Santander & Dio e realizar os desafios de todos os bootcamps.
-- Atensiosamente, Naftali da Costa.
+## Conclusão e Agradecimentos
+Este projeto foi muito além de uma simulação de Brute-Force. Ele representou um estudo abrangente sobre diversos vetores de ataque e defesa, executado em um ambiente ético, controlado e autorizado.
+
+O desenvolvimento deste laboratório faz parte do Desafio de Projeto (Simulando um Ataque de Brute Force de Senhas com Medusa e Kali Linux) do Bootcamp Santander Cibersegurança 2025. 
+
+
 
