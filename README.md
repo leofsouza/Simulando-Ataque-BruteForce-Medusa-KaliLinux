@@ -1,4 +1,4 @@
-## Desafio DIO Santander - Cibersegurança 2025
+## Desafio DIO Santander - Bootcamp Cibersegurança 2025
 # Projeto Simulando um Ataque de Brute Force de Senhas com Medusa e Kali Linux
 Descrição do Desafio:
 Este projeto consiste na implementação e documentação de um laboratório prático focado em ataques de Força Bruta (Brute Force).
